@@ -1,0 +1,241 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard - TaskFlow{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Dashboard</h1>
+        <a href="{{ path('app_task_new') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i> New Task
+        </a>
+    </div>
+    
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3 mb-md-0">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">Total Tasks</h6>
+                            <h3 class="mb-0">{{ task_counts.total }}</h3>
+                        </div>
+                        <div class="rounded-circle bg-light p-3">
+                            <i class="fas fa-tasks text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3 mb-md-0">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">To Do</h6>
+                            <h3 class="mb-0">{{ task_counts.todo }}</h3>
+                        </div>
+                        <div class="rounded-circle bg-light p-3">
+                            <i class="fas fa-clipboard-list text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3 mb-md-0">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">In Progress</h6>
+                            <h3 class="mb-0">{{ task_counts.in_progress }}</h3>
+                        </div>
+                        <div class="rounded-circle bg-light p-3">
+                            <i class="fas fa-spinner text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">Completed</h6>
+                            <h3 class="mb-0">{{ task_counts.done }}</h3>
+                        </div>
+                        <div class="rounded-circle bg-light p-3">
+                            <i class="fas fa-check-circle text-success"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Progress Bar -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Task Completion Progress</h5>
+            <div class="progress" style="height: 10px;">
+                {% set todo_percent = task_counts.total > 0 ? (task_counts.todo / task_counts.total * 100) : 0 %}
+                {% set progress_percent = task_counts.total > 0 ? (task_counts.in_progress / task_counts.total * 100) : 0 %}
+                {% set review_percent = task_counts.total > 0 ? (task_counts.review / task_counts.total * 100) : 0 %}
+                {% set done_percent = task_counts.total > 0 ? (task_counts.done / task_counts.total * 100) : 0 %}
+                
+                <div class="progress-bar bg-primary" role="progressbar" style="width: {{ todo_percent }}%" title="To Do: {{ task_counts.todo }}"></div>
+                <div class="progress-bar bg-warning" role="progressbar" style="width: {{ progress_percent }}%" title="In Progress: {{ task_counts.in_progress }}"></div>
+                <div class="progress-bar bg-info" role="progressbar" style="width: {{ review_percent }}%" title="Review: {{ task_counts.review }}"></div>
+                <div class="progress-bar bg-success" role="progressbar" style="width: {{ done_percent }}%" title="Done: {{ task_counts.done }}"></div>
+            </div>
+            <div class="d-flex justify-content-between mt-2">
+                <div class="d-flex align-items-center">
+                    <div class="bg-primary rounded-circle me-1" style="width: 10px; height: 10px;"></div>
+                    <small class="text-muted">To Do</small>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="bg-warning rounded-circle me-1" style="width: 10px; height: 10px;"></div>
+                    <small class="text-muted">In Progress</small>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="bg-info rounded-circle me-1" style="width: 10px; height: 10px;"></div>
+                    <small class="text-muted">Review</small>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="bg-success rounded-circle me-1" style="width: 10px; height: 10px;"></div>
+                    <small class="text-muted">Done</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- My Tasks -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white py-3">
+            <h5 class="card-title mb-0">My Tasks</h5>
+        </div>
+        <div class="card-body">
+            {% if user_tasks|length > 0 %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Status</th>
+                                <th>Priority</th>
+                                <th>Due Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for task in user_tasks %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="form-check me-2">
+                                                <input class="form-check-input task-complete-checkbox" type="checkbox" 
+                                                    data-task-id="{{ task.id }}" 
+                                                    {% if task.completed %}checked{% endif %}>
+                                            </div>
+                                            <span class="{% if task.completed %}text-decoration-line-through text-muted{% endif %}">
+                                                {{ task.title }}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% if task.status == 'todo' %}
+                                            <span class="badge bg-primary">To Do</span>
+                                        {% elseif task.status == 'in_progress' %}
+                                            <span class="badge bg-warning">In Progress</span>
+                                        {% elseif task.status == 'review' %}
+                                            <span class="badge bg-info">Review</span>
+                                        {% elseif task.status == 'done' %}
+                                            <span class="badge bg-success">Done</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if task.priority >= 7 %}
+                                            <span class="badge bg-danger">High</span>
+                                        {% elseif task.priority >= 4 %}
+                                            <span class="badge bg-warning">Medium</span>
+                                        {% else %}
+                                            <span class="badge bg-info">Low</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if task.dueDate %}
+                                            {{ task.dueDate|date('M d, Y') }}
+                                        {% else %}
+                                            <span class="text-muted">No due date</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a href="{{ path('app_task_show', {'id': task.id}) }}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{{ path('app_task_edit', {'id': task.id}) }}" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-5">
+                    <div class="mb-3">
+                        <i class="fas fa-tasks fa-3x text-muted"></i>
+                    </div>
+                    <h5>No tasks assigned to you</h5>
+                    <p class="text-muted">Create a new task or ask your team to assign you tasks.</p>
+                    <a href="{{ path('app_task_new') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i> Create Task
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle task completion checkboxes
+        const checkboxes = document.querySelectorAll('.task-complete-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const taskId = this.getAttribute('data-task-id');
+                
+                fetch(`/task/${taskId}/toggle-complete`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const taskTitle = this.closest('td').querySelector('span');
+                        if (data.completed) {
+                            taskTitle.classList.add('text-decoration-line-through', 'text-muted');
+                        } else {
+                            taskTitle.classList.remove('text-decoration-line-through', 'text-muted');
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %} 

@@ -1,0 +1,246 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ task.title }} - TaskFlow{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Task Details</h1>
+        <div>
+            <a href="{{ path('app_task_index') }}" class="btn btn-outline-primary me-2">
+                <i class="fas fa-arrow-left me-2"></i> Back to Tasks
+            </a>
+            <a href="{{ path('app_task_edit', {'id': task.id}) }}" class="btn btn-primary">
+                <i class="fas fa-edit me-2"></i> Edit Task
+            </a>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="h4 mb-0">{{ task.title }}</h2>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input task-complete-checkbox" type="checkbox" 
+                                data-task-id="{{ task.id }}" 
+                                {% if task.completed %}checked{% endif %}>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Mark as completed</label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        {% if task.status == 'todo' %}
+                            <span class="badge bg-primary">To Do</span>
+                        {% elseif task.status == 'in_progress' %}
+                            <span class="badge bg-warning">In Progress</span>
+                        {% elseif task.status == 'review' %}
+                            <span class="badge bg-info">Review</span>
+                        {% elseif task.status == 'done' %}
+                            <span class="badge bg-success">Done</span>
+                        {% endif %}
+                        
+                        {% if task.priority >= 7 %}
+                            <span class="badge bg-danger ms-1">High Priority</span>
+                        {% elseif task.priority >= 4 %}
+                            <span class="badge bg-warning ms-1">Medium Priority</span>
+                        {% else %}
+                            <span class="badge bg-info ms-1">Low Priority</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5 class="h6 mb-3">Description</h5>
+                        <div class="p-3 bg-light rounded">
+                            {% if task.description %}
+                                {{ task.description|nl2br }}
+                            {% else %}
+                                <p class="text-muted mb-0">No description provided</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h5 class="h6 mb-2">Status</h5>
+                            <div class="d-flex">
+                                <select class="form-select" id="taskStatus" data-task-id="{{ task.id }}">
+                                    <option value="todo" {% if task.status == 'todo' %}selected{% endif %}>To Do</option>
+                                    <option value="in_progress" {% if task.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                                    <option value="review" {% if task.status == 'review' %}selected{% endif %}>Review</option>
+                                    <option value="done" {% if task.status == 'done' %}selected{% endif %}>Done</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h5 class="h6 mb-2">Priority</h5>
+                            <div class="d-flex align-items-center">
+                                <div class="progress flex-grow-1" style="height: 10px;">
+                                    <div class="progress-bar 
+                                        {% if task.priority >= 7 %}bg-danger
+                                        {% elseif task.priority >= 4 %}bg-warning
+                                        {% else %}bg-info{% endif %}" 
+                                        role="progressbar" 
+                                        style="width: {{ task.priority * 10 }}%" 
+                                        aria-valuenow="{{ task.priority }}" 
+                                        aria-valuemin="0" 
+                                        aria-valuemax="10">
+                                    </div>
+                                </div>
+                                <span class="ms-2">{{ task.priority }}/10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">Task Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6 class="text-muted mb-1 small">Assigned To</h6>
+                        {% if task.assignedTo %}
+                            <div class="d-flex align-items-center">
+                                <div class="avatar me-2" style="width: 30px; height: 30px; font-size: 12px;">
+                                    {{ task.assignedTo.firstName|first }}{{ task.assignedTo.lastName|first }}
+                                </div>
+                                <div>{{ task.assignedTo.fullName }}</div>
+                            </div>
+                        {% else %}
+                            <p class="mb-0 text-muted">Not assigned</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="text-muted mb-1 small">Due Date</h6>
+                        {% if task.dueDate %}
+                            <p class="mb-0">{{ task.dueDate|date('F d, Y') }}</p>
+                        {% else %}
+                            <p class="mb-0 text-muted">No due date</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="text-muted mb-1 small">Created</h6>
+                        <p class="mb-0">{{ task.createdAt|date('F d, Y') }}</p>
+                    </div>
+                    
+                    {% if task.updatedAt %}
+                        <div class="mb-3">
+                            <h6 class="text-muted mb-1 small">Last Updated</h6>
+                            <p class="mb-0">{{ task.updatedAt|date('F d, Y H:i') }}</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="card-title mb-0">Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{{ path('app_task_edit', {'id': task.id}) }}" class="btn btn-primary">
+                            <i class="fas fa-edit me-2"></i> Edit Task
+                        </a>
+                        {{ include('task/_delete_form.html.twig', {'button_class': 'btn-outline-danger w-100'}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Handle task completion checkbox
+        const checkbox = document.querySelector('.task-complete-checkbox');
+        if (checkbox) {
+            checkbox.addEventListener('change', function() {
+                const taskId = this.getAttribute('data-task-id');
+                
+                fetch(`/task/${taskId}/toggle-complete`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Show a success message or update UI
+                        const statusSelect = document.getElementById('taskStatus');
+                        if (data.completed && statusSelect) {
+                            statusSelect.value = 'done';
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        }
+        
+        // Handle status change
+        const statusSelect = document.getElementById('taskStatus');
+        if (statusSelect) {
+            statusSelect.addEventListener('change', function() {
+                const taskId = this.getAttribute('data-task-id');
+                const newStatus = this.value;
+                
+                fetch(`/task/${taskId}/update-status`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({
+                        status: newStatus
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update the status badge
+                        const statusBadge = document.querySelector('.badge:first-child');
+                        if (statusBadge) {
+                            statusBadge.className = 'badge';
+                            if (newStatus === 'todo') {
+                                statusBadge.classList.add('bg-primary');
+                                statusBadge.textContent = 'To Do';
+                            } else if (newStatus === 'in_progress') {
+                                statusBadge.classList.add('bg-warning');
+                                statusBadge.textContent = 'In Progress';
+                            } else if (newStatus === 'review') {
+                                statusBadge.classList.add('bg-info');
+                                statusBadge.textContent = 'Review';
+                            } else if (newStatus === 'done') {
+                                statusBadge.classList.add('bg-success');
+                                statusBadge.textContent = 'Done';
+                                
+                                // Also check the completed checkbox
+                                const checkbox = document.querySelector('.task-complete-checkbox');
+                                if (checkbox && !checkbox.checked) {
+                                    checkbox.checked = true;
+                                }
+                            }
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %} 

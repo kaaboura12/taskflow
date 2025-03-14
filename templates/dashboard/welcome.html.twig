@@ -1,0 +1,160 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Welcome to TaskFlow - Modern Task Management{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row align-items-center">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+            <h1 class="display-4 fw-bold mb-4">Manage your tasks with <span class="text-primary">TaskFlow</span></h1>
+            <p class="lead mb-4">TaskFlow is a modern task management system that helps you organize your work, collaborate with team members, and boost your productivity.</p>
+            <div class="d-flex gap-3">
+                <a href="{{ path('app_register') }}" class="btn btn-primary btn-lg px-4 py-2">Get Started</a>
+                <a href="{{ path('app_login') }}" class="btn btn-outline-primary btn-lg px-4 py-2">Sign In</a>
+            </div>
+            
+            <div class="mt-5">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="me-3 text-primary">
+                                <i class="fas fa-check-circle fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">Task Organization</h5>
+                                <p class="text-muted mb-0">Organize tasks by status, priority, and due date</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="me-3 text-primary">
+                                <i class="fas fa-users fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">Team Collaboration</h5>
+                                <p class="text-muted mb-0">Assign tasks to team members and track progress</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="me-3 text-primary">
+                                <i class="fas fa-chart-line fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">Progress Tracking</h5>
+                                <p class="text-muted mb-0">Monitor task completion and team performance</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-center">
+                            <div class="me-3 text-primary">
+                                <i class="fas fa-mobile-alt fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">Responsive Design</h5>
+                                <p class="text-muted mb-0">Access your tasks from any device, anywhere</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="position-relative">
+                <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                    <img src="https://placehold.co/800x600/5D5FEF/FFFFFF?text=TaskFlow+Dashboard" alt="TaskFlow Dashboard" class="img-fluid">
+                </div>
+                <div class="position-absolute top-0 end-0 translate-middle-y">
+                    <div class="card shadow border-0 rounded-4 p-3 bg-white" style="width: 200px;">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="avatar me-2" style="width: 30px; height: 30px; font-size: 12px;">JD</div>
+                            <div class="small fw-semibold">Task Completed</div>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 75%"></div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-2">
+                            <small class="text-muted">75% Complete</small>
+                            <small class="text-success">+12% this week</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="position-absolute bottom-0 start-0 translate-middle">
+                    <div class="card shadow border-0 rounded-4 p-3 bg-white" style="width: 200px;">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="small fw-semibold">Task Overview</div>
+                            <div class="badge bg-primary rounded-pill">New</div>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <small>To Do</small>
+                            <small class="text-primary">8</small>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <small>In Progress</small>
+                            <small class="text-warning">5</small>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <small>Completed</small>
+                            <small class="text-success">12</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-5 pt-5">
+        <div class="col-12 text-center mb-5">
+            <h2 class="fw-bold">How TaskFlow Works</h2>
+            <p class="lead text-muted">Simple, intuitive, and powerful task management</p>
+        </div>
+        
+        <div class="col-md-4 mb-4 mb-md-0">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-plus-circle fa-2x text-primary"></i>
+                    </div>
+                    <h4 class="mb-3">Create Tasks</h4>
+                    <p class="text-muted">Create tasks with detailed descriptions, priorities, due dates, and assign them to team members.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4 mb-md-0">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-tasks fa-2x text-primary"></i>
+                    </div>
+                    <h4 class="mb-3">Organize Workflow</h4>
+                    <p class="text-muted">Drag and drop tasks between different status columns to update progress in real-time.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-chart-pie fa-2x text-primary"></i>
+                    </div>
+                    <h4 class="mb-3">Track Progress</h4>
+                    <p class="text-muted">Monitor task completion, team performance, and project progress with intuitive dashboards.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-5 pt-5">
+        <div class="col-12 text-center mb-5">
+            <h2 class="fw-bold">Ready to boost your productivity?</h2>
+            <p class="lead text-muted mb-4">Join thousands of users who trust TaskFlow for their task management needs</p>
+            <a href="{{ path('app_register') }}" class="btn btn-primary btn-lg px-5 py-3">Get Started for Free</a>
+        </div>
+    </div>
+</div>
+{% endblock %} 

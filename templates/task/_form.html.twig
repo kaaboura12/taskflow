@@ -1,0 +1,79 @@
+{{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+    <div class="row g-3 mb-4">
+        <div class="col-md-8">
+            {{ form_label(form.title) }}
+            {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+            <div class="invalid-feedback">
+                {{ form_errors(form.title) }}
+            </div>
+        </div>
+        <div class="col-md-4">
+            {{ form_label(form.priority) }}
+            {{ form_widget(form.priority, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-text">{{ form_help(form.priority) }}</div>
+            <div class="invalid-feedback">
+                {{ form_errors(form.priority) }}
+            </div>
+        </div>
+    </div>
+    
+    <div class="mb-4">
+        {{ form_label(form.description) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': 4}}) }}
+        <div class="invalid-feedback">
+            {{ form_errors(form.description) }}
+        </div>
+    </div>
+    
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            {{ form_label(form.status) }}
+            {{ form_widget(form.status, {'attr': {'class': 'form-select'}}) }}
+            <div class="invalid-feedback">
+                {{ form_errors(form.status) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            {{ form_label(form.dueDate) }}
+            {{ form_widget(form.dueDate, {'attr': {'class': 'form-control'}}) }}
+            <div class="invalid-feedback">
+                {{ form_errors(form.dueDate) }}
+            </div>
+        </div>
+    </div>
+    
+    <div class="mb-4">
+        {{ form_label(form.assignedTo) }}
+        {{ form_widget(form.assignedTo, {'attr': {'class': 'form-select'}}) }}
+        <div class="invalid-feedback">
+            {{ form_errors(form.assignedTo) }}
+        </div>
+    </div>
+    
+    <div class="d-grid mt-4">
+        <button class="btn btn-primary py-2">{{ button_label|default('Create') }}</button>
+    </div>
+{{ form_end(form) }}
+
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script> 
